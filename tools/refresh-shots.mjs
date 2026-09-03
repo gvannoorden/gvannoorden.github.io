@@ -2,8 +2,13 @@
 /*
  * refresh-shots.mjs — regenerate assets/*.webp from the live apps.
  *
- *   node tools/refresh-shots.mjs            # all of them
- *   node tools/refresh-shots.mjs map timer  # just these
+ *   node tools/refresh-shots.mjs                  # all of them
+ *   node tools/refresh-shots.mjs map timer        # just these
+ *   node tools/refresh-shots.mjs tree --no-capture  # re-encode .shots/tree.png
+ *
+ * --no-capture skips the browser capture and just crops + encodes whatever
+ * PNG already sits in .shots/<name>.png — that's how you swap in a shot taken
+ * by hand, e.g. from inside an app that's behind a password.
  *
  * Not part of serving the site — index.html only needs the .webp files this
  * writes. Run it when an app's UI changes.
@@ -66,7 +71,9 @@ const APPS = {
 const OUT_W = 1280, ASPECT = 10 / 16, QUALITY = 0.82;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-const wanted = process.argv.slice(2).filter(a => !a.startsWith('-'));
+const argv = process.argv.slice(2);
+const NO_CAPTURE = argv.includes('--no-capture');
+const wanted = argv.filter(a => !a.startsWith('-'));
 const names = wanted.length ? wanted : Object.keys(APPS);
 for (const n of names) {
   if (!APPS[n]) { console.error(`unknown app "${n}" — pick from: ${Object.keys(APPS).join(', ')}`); process.exit(1); }
@@ -108,6 +115,15 @@ async function browser(port) {
 }
 
 /* ── pass 1: capture ─────────────────────────────────────────────── */
+if (NO_CAPTURE) {
+  console.log('skipping capture — using the PNGs already in .shots/');
+  for (const name of names) {
+    if (!existsSync(join(RAW, `${name}.png`))) {
+      console.error(`missing ${join('.shots', name + '.png')} — put the screenshot there first`);
+      process.exit(1);
+    }
+  }
+} else {
 console.log('capturing…');
 {
   const b = await browser(9401);
@@ -129,6 +145,7 @@ console.log('capturing…');
     writeFileSync(join(RAW, `${name}.png`), Buffer.from(shot.result.data, 'base64'));
   }
   b.close();
+}
 }
 
 /* ── pass 2: crop + encode ───────────────────────────────────────── */

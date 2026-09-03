@@ -13,8 +13,13 @@ and green in dark, with a toggle in the bottom-right corner. It follows the
 system setting until you click the toggle, after which your choice is remembered
 in `localStorage`.
 
-Fonts come from Google Fonts (Cinzel, Cinzel Decorative, EB Garamond, JetBrains
-Mono). Everything else is inline.
+Fonts come from Google Fonts: **Cinzel Decorative** for the big name, **Cinzel**
+for headings and small caps, **EB Garamond** for body text, JetBrains Mono for
+the little tech chips. Everything else is inline.
+
+The surname is the Scott-Miller logo (Silverstone) rather than type —
+`assets/scott-miller.svg`, painted as a CSS mask so the one monochrome file
+picks up the theme colour in both light and dark.
 
 ## Adding a project
 
@@ -44,8 +49,15 @@ actually finish loading, crops to 16:10 and writes WebP into `assets/`. Needs
 Node 22+ and Edge (or `EDGE=/path/to/chromium`). No npm install.
 
 Two of the apps sit behind a password, so their thumbnails are the front door
-rather than the interior. To use an inside shot instead, drop your own 16:10
-image at `assets/tree.webp` or `assets/keys.webp` and leave the script alone.
+rather than the interior. To use an inside shot instead, save your screenshot as
+`.shots/<name>.png` and re-encode just that one:
+
+```bash
+node tools/refresh-shots.mjs tree --no-capture
+```
+
+`--no-capture` skips the browser entirely and crops + encodes the PNG that's
+already there.
 
 ## Local preview
 

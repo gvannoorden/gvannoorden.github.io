@@ -22,7 +22,8 @@ in the global CLAUDE.md does not apply.
   apps' own hosts and are fine.
 - Respect `prefers-reduced-motion` — the mote canvas and the turning sigil rings
   must both switch off.
-- High-fantasy typography (Cinzel / EB Garamond) without tipping into costume.
+- High-fantasy typography without tipping into costume: Cinzel Decorative for
+  the name, Cinzel for headings and small caps, EB Garamond for body.
 
 ## Theming
 
@@ -42,6 +43,20 @@ theme-dependent effects also live in tokens: `--wash`, `--veil`, `--glow`,
 Three theme states: no `data-theme` attribute means follow the system;
 `light` / `dark` are explicit and persisted to `localStorage`. An inline script
 in `<head>` applies the saved value before first paint so there's no flash.
+
+## The wordmark
+
+The surname in the `<h1>` is Gavin's Scott-Miller logo (Silverstone typeface),
+not type. `assets/scott-miller.svg` was cut from his master artwork: the
+"Goods & Services" subtitle removed, the viewBox tightened to the measured
+bbox of what's left. **The rule under the name and the long hyphen are part of
+the artwork** — they're separate clipped shapes, not text decoration, so don't
+try to reproduce them in CSS.
+
+It's applied as a CSS `mask` on `h1 .mark` with `background-color:var(--verdant)`,
+so one monochrome file takes the theme colour. Under `@supports` failure the
+typeset `.mark-txt` fallback shows instead; that span also stays in the DOM
+(visually hidden) so the name is still readable to screen readers.
 
 ## The works grid
 
@@ -65,9 +80,12 @@ Two things that cost time, so don't re-derive them:
   `toDataURL('image/webp')`, served from a real http origin so the image isn't
   blocked and the canvas isn't tainted.
 
-Genealotree and the shortcut tracker are password-gated, so their thumbnails are
-the front door. Don't try to get past those gates — swap in a hand-supplied
-image if an interior view is wanted.
+Genealotree and the shortcut tracker are password-gated, so their thumbnails
+default to the front door. Don't try to get past those gates. To use an interior
+view, drop the PNG at `.shots/<name>.png` and run
+`node tools/refresh-shots.mjs <name> --no-capture`, which skips the browser and
+only crops + encodes. A full-window UI shot wants `crop: [0, 0, 1, 1]`; the
+centred-card crops in `APPS` are tuned for the login screens.
 
 ## Deploying
 

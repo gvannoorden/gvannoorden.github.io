@@ -195,9 +195,29 @@ h1{
   text-wrap:balance;
   text-shadow:0 0 60px var(--head-glow);
 }
-h1 .sub-name{
-  display:block; font-size:.52em; letter-spacing:.06em;
-  color:var(--verdant); margin-top:.22em;
+/* The surname is set as the Scott-Miller logo (Silverstone, with its rule and
+   long hyphen baked into the artwork). It's painted as a CSS mask so one
+   monochrome file takes the theme colour in both light and dark. Without mask
+   support the typeset fallback below is what shows. */
+h1 .mark{ display:block; margin-top:.22em; }
+h1 .mark-txt{
+  font-family:"Cinzel Decorative","Cinzel",serif;
+  font-size:.52em; letter-spacing:.06em; color:var(--verdant);
+}
+@supports (mask-image:url(#m)) or (-webkit-mask-image:url(#m)){
+  h1 .mark{
+    width:min(4.05em,86vw);
+    aspect-ratio:975.94 / 231.61;      /* the artwork's own bounds */
+    margin:.34em auto .06em;
+    background-color:var(--verdant);
+    -webkit-mask:url(assets/scott-miller.svg) center / contain no-repeat;
+            mask:url(assets/scott-miller.svg) center / contain no-repeat;
+  }
+  /* keep the name readable to screen readers and to search engines */
+  h1 .mark-txt{
+    position:absolute; width:1px; height:1px;
+    overflow:hidden; clip-path:inset(50%); white-space:nowrap;
+  }
 }
 
 .lede{
@@ -529,7 +549,7 @@ footer .flourish{ margin-bottom:34px; }
     </svg>
 
     <p class="eyebrow">The Workshop of</p>
-    <h1>Gavin<span class="sub-name">Scott-Miller</span></h1>
+    <h1>Gavin<span class="mark"><span class="mark-txt">Scott-Miller</span></span></h1>
 
     <p class="lede">
       Small, strange, useful things — mostly built after dark, mostly
