@@ -7,30 +7,49 @@ Live: https://gvannoorden.github.io
 
 ## What it is
 
-A single static `index.html`. No build step, no dependencies, no framework.
-Dark, green, vaguely high-fantasy. Fonts come from Google Fonts (Cinzel,
-Cinzel Decorative, EB Garamond, JetBrains Mono); everything else is inline.
+A single static `index.html` plus five screenshots in `assets/`. No build step,
+no dependencies, no framework. Dark and light: parchment in light mode, near-black
+and green in dark, with a toggle in the bottom-right corner. It follows the
+system setting until you click the toggle, after which your choice is remembered
+in `localStorage`.
+
+Fonts come from Google Fonts (Cinzel, Cinzel Decorative, EB Garamond, JetBrains
+Mono). Everything else is inline.
 
 ## Adding a project
 
-Copy an existing `<article class="work">` block in `index.html` and edit:
+Copy an existing `<a class="work">` block in `index.html` and edit the numeral,
+the `.kicker` category, the `<h3>`, the description, the `.chip`s, and the `href`
+(which appears once, on the `<a>` itself).
 
-- `.numeral` — the roman numeral
-- `.kicker` — the one-word category label
-- `<h3>` — the name
-- `<p>` — a sentence or two, plain language
-- `.chip`s — the stack
-- `.links` — the live URL and the repo URL
+Then add the screenshot: put an entry in `APPS` in
+[`tools/refresh-shots.mjs`](tools/refresh-shots.mjs) and run it (see below).
 
-The `.work-mark` SVG is the faint watermark that appears on hover. Swap it for
-something that suits the project, or drop it.
+Five cards are laid out as one wide feature (the first) above a 2×2. **If the
+count changes, check the grid rules** under `/* WORKS */` — the feature span
+assumes five.
 
-Five cards fill two rows cleanly because the last card spans the leftover
-cells. If the count changes, check the grid rules near `/* works grid */`.
+## Refreshing the screenshots
+
+When an app's UI changes:
+
+```bash
+node tools/refresh-shots.mjs
+```
+
+One app at a time works too: `node tools/refresh-shots.mjs map timer`.
+
+It drives headless Edge over the DevTools protocol, waits for each app to
+actually finish loading, crops to 16:10 and writes WebP into `assets/`. Needs
+Node 22+ and Edge (or `EDGE=/path/to/chromium`). No npm install.
+
+Two of the apps sit behind a password, so their thumbnails are the front door
+rather than the interior. To use an inside shot instead, drop your own 16:10
+image at `assets/tree.webp` or `assets/keys.webp` and leave the script alone.
 
 ## Local preview
 
-```
+```bash
 python3 -m http.server 4712
 ```
 
