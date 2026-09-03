@@ -58,6 +58,24 @@ so one monochrome file takes the theme colour. Under `@supports` failure the
 typeset `.mark-txt` fallback shows instead; that span also stays in the DOM
 (visually hidden) so the name is still readable to screen readers.
 
+## The sigil
+
+The leaf lives in three places, and they are separate copies of the same
+geometry — change one, change all three:
+
+1. inline in `index.html` (uses the theme tokens, so it recolours)
+2. the favicon data URI in `<head>`
+3. `assets/sigil-triangle.svg` / `assets/sigil-leaf.svg`, standalone artwork
+   with literal colours, plus 1024px transparent PNGs beside them
+
+Two traps in the standalone files:
+- **No `--` inside an XML comment.** A standalone `.svg` is parsed as strict
+  XML, so a comment mentioning `var(‑‑something)` makes the whole file fail to
+  load as an `<img>` — silently, with no console error. Reword instead.
+- Stroke widths on the scaled leaf are pre-divided by the scale factor.
+  `vector-effect="non-scaling-stroke"` looks equivalent at small sizes but pins
+  strokes to screen pixels, so the leaf goes hairline when shown large.
+
 ## The works grid
 
 Five cards: the first is `.work--feature` and spans the full width (going

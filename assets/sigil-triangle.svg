@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="2.6 1.6 58.8 54.8" width="512" height="477" fill="none" role="img" aria-labelledby="t d">
+  <title id="t">Leaf and triangle sigil</title>
+  <desc id="d">A single leaf with a central stem, enclosed by a gold triangle.</desc>
+  <!-- Colours are literal so the file stands alone. index.html draws the same
+       geometry from its own green and gold CSS tokens, so it follows the theme. -->
+  <!-- the frame -->
+  <path d="M32 3 L60 55 L4 55 Z" stroke="#c9a227" stroke-width="1.1" stroke-linejoin="round"/>
+  <!-- The leaf, scaled about (32,33) to sit inside the frame. Stroke widths are
+       pre-divided by the 0.65 scale so they render at the weights the leaf was
+       drawn with. Don't swap this for a non-scaling-stroke vector-effect: that
+       pins strokes to screen pixels and goes hairline at large sizes. -->
+  <g transform="translate(32 33.5) scale(.65) translate(-32 -33)">
+    <path d="M32 4c9 11 16 16 16 27a16 16 0 0 1-32 0C16 20 23 15 32 4z" stroke="#74c391" stroke-width="2.46"/>
+    <path d="M32 16v42" stroke="#c9a227" stroke-width="1.85"/>
+    <path d="M32 30c-6-1-10-4-12-8M32 40c6-1 10-4 12-8" stroke="#74c391" stroke-width="1.54"/>
+    <circle cx="32" cy="60" r="2" fill="#c9a227"/>
+  </g>
+</svg>

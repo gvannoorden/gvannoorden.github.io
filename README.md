@@ -21,6 +21,21 @@ The surname is the Scott-Miller logo (Silverstone) rather than type —
 `assets/scott-miller.svg`, painted as a CSS mask so the one monochrome file
 picks up the theme colour in both light and dark.
 
+## The sigil
+
+The leaf mark exists as standalone artwork, in two forms, green-and-gold on a
+transparent ground:
+
+| file | what it is |
+|---|---|
+| `assets/sigil-triangle.svg` | leaf inside the triangle, as the hero uses it |
+| `assets/sigil-leaf.svg` | the original leaf on its own |
+| `assets/sigil-*.png` | the same two at 1024px, transparent |
+
+The SVGs carry literal colours so they work anywhere. The copy drawn inline in
+`index.html` uses the theme tokens instead, which is why it recolours with the
+toggle and these files don't.
+
 ## Adding a project
 
 Copy an existing `<a class="work">` block in `index.html` and edit the numeral,

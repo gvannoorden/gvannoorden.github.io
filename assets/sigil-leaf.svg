@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="14.6 2.6 34.8 60.8" width="293" height="512" fill="none" role="img" aria-labelledby="t d">
+  <title id="t">Leaf sigil</title>
+  <desc id="d">A single leaf with a central stem and two veins, on a long stalk ending in a small dot.</desc>
+  <!-- The original mark, without the triangle. Colours are literal so the file
+       stands alone; index.html draws the same geometry from its own green and
+       gold CSS tokens, so it follows the theme. -->
+  <path d="M32 4c9 11 16 16 16 27a16 16 0 0 1-32 0C16 20 23 15 32 4z" stroke="#74c391" stroke-width="1.6"/>
+  <path d="M32 16v42" stroke="#c9a227" stroke-width="1.2"/>
+  <path d="M32 30c-6-1-10-4-12-8M32 40c6-1 10-4 12-8" stroke="#74c391" stroke-width="1"/>
+  <circle cx="32" cy="60" r="2" fill="#c9a227"/>
+</svg>
