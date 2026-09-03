@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2305080a'/%3E%3Cpath d='M16 5c4 5 7 7 7 12a7 7 0 0 1-14 0c0-5 3-7 7-12z' fill='none' stroke='%2374c391' stroke-width='1.6'/%3E%3Cpath d='M16 10v14' stroke='%23c9a227' stroke-width='1.2'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2305080a'/%3E%3Cpath d='M16 3 L29 27 L3 27 Z' fill='none' stroke='%23c9a227' stroke-width='1.4'/%3E%3Cpath d='M16 9c3.2 4 5 5.6 5 9a5 5 0 0 1-10 0c0-3.4 1.8-5 5-9z' fill='none' stroke='%2374c391' stroke-width='1.5'/%3E%3Cpath d='M16 13v10' stroke='%23c9a227' stroke-width='1.1'/%3E%3C/svg%3E">
 
 <style>
 /* ═══════════════════════════  TOKENS  ═══════════════════════════
@@ -174,7 +174,7 @@ body{
 @keyframes turn{ to{ rotate:360deg; } }
 
 .sigil{
-  width:64px; height:64px; margin:0 auto 30px;
+  width:72px; height:72px; margin:0 auto 28px;
   display:block;
   filter:drop-shadow(0 0 22px var(--head-glow));
 }
@@ -428,15 +428,32 @@ section{ position:relative; padding:88px 0; }
 footer{ padding:20px 0 72px; text-align:center; }
 footer .flourish{ margin-bottom:34px; }
 .creed{
-  max-width:34ch; margin:0 auto 10px;
-  font-size:clamp(19px,2.6vw,25px); line-height:1.45;
+  max-width:44ch; margin:0 auto 14px;
+  font-size:clamp(18px,2.3vw,23px); line-height:1.52;
   font-style:italic; color:var(--mithril);
+  text-wrap:pretty;
 }
 .creed-by{
   font-family:"Cinzel",serif;
   font-size:9.5px; letter-spacing:.34em; text-transform:uppercase;
-  color:var(--muted-dim); margin:0 0 34px;
+  color:var(--muted-dim); margin:0 0 40px;
 }
+/* the dedication, set as an inscription between two hairlines */
+.soli{
+  display:flex; align-items:center; justify-content:center;
+  gap:clamp(12px,3vw,20px);
+  margin:0 auto 38px;
+  font-family:"Cinzel",serif; font-weight:600;
+  font-size:clamp(10.5px,1.5vw,12.5px);
+  letter-spacing:.38em; text-indent:.38em; text-transform:uppercase;
+  color:var(--gold);
+}
+.soli::before,.soli::after{
+  content:""; height:1px; flex:none;
+  width:clamp(22px,7vw,58px);
+  background:linear-gradient(90deg,transparent,var(--hair-lit));
+}
+.soli::after{ background:linear-gradient(270deg,transparent,var(--hair-lit)); }
 .colophon{
   margin-top:34px;
   font-family:"Cinzel",serif;
@@ -542,10 +559,20 @@ footer .flourish{ margin-bottom:34px; }
 
   <div class="wrap">
     <svg class="sigil" viewBox="0 0 64 64" aria-hidden="true" fill="none">
-      <path d="M32 4c9 11 16 16 16 27a16 16 0 0 1-32 0C16 20 23 15 32 4z" stroke="currentColor" stroke-width="1.6" style="color:var(--verdant)"/>
-      <path d="M32 16v42" stroke="currentColor" stroke-width="1.2" style="color:var(--gold)"/>
-      <path d="M32 30c-6-1-10-4-12-8M32 40c6-1 10-4 12-8" stroke="currentColor" stroke-width="1" style="color:var(--verdant)"/>
-      <circle cx="32" cy="60" r="2" fill="currentColor" style="color:var(--gold)"/>
+      <!-- the frame -->
+      <path d="M32 3 L60 55 L4 55 Z" stroke="currentColor" stroke-width="1.1"
+            stroke-linejoin="round" style="color:var(--gold)"/>
+      <!-- The leaf, scaled about (32,33) to sit inside the frame. Stroke widths
+           are pre-divided by the 0.65 scale so they render at the weights the
+           leaf was drawn with. (Don't reach for vector-effect="non-scaling-stroke"
+           here — that pins strokes to screen pixels, so the leaf goes hairline
+           whenever the mark is shown large.) -->
+      <g transform="translate(32 33.5) scale(.65) translate(-32 -33)">
+        <path d="M32 4c9 11 16 16 16 27a16 16 0 0 1-32 0C16 20 23 15 32 4z" stroke="currentColor" stroke-width="2.46" style="color:var(--verdant)"/>
+        <path d="M32 16v42" stroke="currentColor" stroke-width="1.85" style="color:var(--gold)"/>
+        <path d="M32 30c-6-1-10-4-12-8M32 40c6-1 10-4 12-8" stroke="currentColor" stroke-width="1.54" style="color:var(--verdant)"/>
+        <circle cx="32" cy="60" r="2" fill="currentColor" style="color:var(--gold)"/>
+      </g>
     </svg>
 
     <p class="eyebrow">The Workshop of</p>
@@ -658,7 +685,7 @@ footer .flourish{ margin-bottom:34px; }
       <a class="work rise" href="https://gvannoorden.github.io/keyboardshortcuts/" target="_blank" rel="noopener">
         <div class="shot">
           <img src="assets/keys.webp" width="1280" height="800" loading="lazy" decoding="async"
-               alt="Keyboard Shortcut Tracker's unlock screen: a white card with a padlock, on a violet gradient.">
+               alt="Keyboard Shortcut Tracker showing a full keyboard laid out key by key on a dark panel, with OS and layout toggles and a colour-coded tag legend.">
         </div>
         <div class="body">
           <div class="work-top"><span class="numeral">V</span><span class="kicker">Arsenal</span><i></i></div>
@@ -685,15 +712,18 @@ footer .flourish{ margin-bottom:34px; }
       </svg>
       <i></i>
     </div>
-    <blockquote class="creed">&ldquo;It's dangerous business, walking out your front door.&rdquo;</blockquote>
+    <blockquote class="creed">&ldquo;It&rsquo;s a dangerous business, Frodo, going out your door.
+      You step onto the road, and if you don&rsquo;t keep your feet, there&rsquo;s no
+      telling where you might get swept off to.&rdquo;</blockquote>
     <p class="creed-by">Bilbo Baggins</p>
+    <p class="soli">Soli Deo Gloria</p>
     <div class="cta-row" style="margin-top:0">
       <a class="btn" href="https://gavinsm.notion.site" target="_blank" rel="noopener">
         My Site
         <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12"/></svg>
       </a>
     </div>
-    <p class="colophon">Built by hand &middot; MMXXVI</p>
+    <p class="colophon">MMXXVI</p>
   </div>
 </footer>
 

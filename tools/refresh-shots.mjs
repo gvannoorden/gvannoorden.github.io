@@ -67,7 +67,8 @@ const APPS = {
   // (blurred), not the centred login card the other two crops are tuned for
   tree:  { url: 'https://gvannoorden.github.io/genealotree-v2/',          win: [1440, 900], settle: 3000, crop: [0, 0, 1, 1] },
   timer: { url: 'https://gvannoorden.github.io/LegacyfarmerNotiontimer/', win: [920, 575], settle: 3000, crop: [0.03, 0.06, 0.94, 0.88] },
-  keys:  { url: 'https://gvannoorden.github.io/keyboardshortcuts/',       win: [920, 575], settle: 3000, crop: [0.09, 0.09, 0.82, 0.82] },
+  // full frame: also a hand-supplied interior shot, past the unlock screen
+  keys:  { url: 'https://gvannoorden.github.io/keyboardshortcuts/',       win: [1440, 900], settle: 3000, crop: [0, 0, 1, 1] },
 };
 
 const OUT_W = 1280, ASPECT = 10 / 16, QUALITY = 0.82;
