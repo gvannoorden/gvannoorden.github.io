@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gavin Scott-Miller — The Workshop</title>
+<meta name="description" content="A collection of small, strange, useful things built by Gavin Scott-Miller. Map wallpapers, family trees, timers, and other late-night software.">
+<meta name="theme-color" content="#05080a">
+<meta property="og:title" content="Gavin Scott-Miller — The Workshop">
+<meta property="og:description" content="A collection of small, strange, useful things. Map wallpapers, family trees, timers, and other late-night software.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2305080a'/%3E%3Cpath d='M16 5c4 5 7 7 7 12a7 7 0 0 1-14 0c0-5 3-7 7-12z' fill='none' stroke='%2374c391' stroke-width='1.6'/%3E%3Cpath d='M16 10v14' stroke='%23c9a227' stroke-width='1.2'/%3E%3C/svg%3E">
+
+<style>
+/* ─────────────────────────────  tokens  ───────────────────────────── */
+:root{
+  --ink:        #05080a;
+  --ink-2:      #080e0d;
+  --ink-3:      #0c1614;
+  --hair:       rgba(116,195,145,.16);
+  --hair-lit:   rgba(116,195,145,.42);
+  --moss:       #2f5d3f;
+  --verdant:    #74c391;
+  --verdant-lo: #3f8a5d;
+  --mithril:    #dce8e0;
+  --muted:      #7f9a8b;
+  --muted-dim:  #5b7266;
+  --gold:       #c9a227;
+  --gold-lit:   #e6ca77;
+  --maxw:       1120px;
+  --ease:       cubic-bezier(.2,.7,.2,1);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+
+body{
+  margin:0;
+  min-height:100%;
+  background:var(--ink);
+  color:var(--mithril);
+  font-family:"EB Garamond",Georgia,serif;
+  font-size:18px;
+  line-height:1.65;
+  letter-spacing:.002em;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ─────────────────────────────  ground  ───────────────────────────── */
+/* layered gloom: a low mossy horizon, a cold shaft from above */
+.ground{
+  position:fixed; inset:0; z-index:-3; pointer-events:none;
+  background:
+    radial-gradient(120% 80% at 50% -10%, rgba(116,195,145,.10), transparent 60%),
+    radial-gradient(80% 55% at 50% 108%, rgba(47,93,63,.30), transparent 70%),
+    radial-gradient(60% 40% at 8% 30%,  rgba(30,70,55,.22), transparent 70%),
+    radial-gradient(50% 40% at 95% 62%, rgba(60,80,40,.14), transparent 70%),
+    linear-gradient(180deg, #04070a 0%, #060d0c 45%, #04090a 100%);
+}
+/* film grain — keeps the flat darks from banding */
+.grain{
+  position:fixed; inset:0; z-index:-2; pointer-events:none;
+  opacity:.045; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+#motes{ position:fixed; inset:0; z-index:-1; pointer-events:none; }
+
+/* ─────────────────────────────  shell  ───────────────────────────── */
+.wrap{ width:100%; max-width:var(--maxw); margin:0 auto; padding:0 28px; }
+
+/* ─────────────────────────────  hero  ───────────────────────────── */
+.hero{
+  position:relative;
+  min-height:100svh;
+  display:grid; place-items:center;
+  text-align:center;
+  padding:96px 0 72px;
+}
+
+/* the slowly turning sigil-ring behind the name */
+.ring{
+  position:absolute; top:50%; left:50%;
+  width:min(112vw,860px); aspect-ratio:1;
+  translate:-50% -54%;
+  opacity:.20; pointer-events:none;
+  animation:turn 240s linear infinite;
+}
+.ring--inner{
+  width:min(74vw,560px);
+  opacity:.16;
+  animation:turn 160s linear infinite reverse;
+}
+@keyframes turn{ to{ rotate:360deg; } }
+
+.sigil{
+  width:64px; height:64px; margin:0 auto 30px;
+  display:block; opacity:.95;
+  filter:drop-shadow(0 0 22px rgba(116,195,145,.4));
+}
+
+.eyebrow{
+  font-family:"Cinzel",serif; font-weight:500;
+  font-size:clamp(9.5px,1.4vw,12px);
+  letter-spacing:.52em; text-indent:.52em;
+  text-transform:uppercase;
+  color:var(--muted-dim);
+  margin:0 0 22px;
+}
+
+h1{
+  font-family:"Cinzel Decorative","Cinzel",serif;
+  font-weight:700;
+  font-size:clamp(38px,8.4vw,88px);
+  line-height:.98;
+  letter-spacing:.005em;
+  margin:0;
+  color:#f0f6f1;
+  text-wrap:balance;
+  text-shadow:0 0 60px rgba(116,195,145,.22), 0 2px 0 rgba(0,0,0,.6);
+}
+h1 .amp{ display:block; }
+h1 .sub-name{
+  display:block;
+  font-size:.52em;
+  letter-spacing:.06em;
+  color:var(--verdant);
+  margin-top:.22em;
+  text-shadow:0 0 40px rgba(116,195,145,.3);
+}
+
+.lede{
+  max-width:44ch;
+  margin:30px auto 0;
+  text-wrap:balance;
+  font-size:clamp(17px,2.1vw,21px);
+  line-height:1.62;
+  color:var(--muted);
+}
+.lede em{ color:var(--mithril); font-style:italic; }
+
+/* ─────────────────────────────  buttons  ───────────────────────────── */
+.cta-row{
+  margin-top:40px;
+  display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
+}
+
+.btn{
+  --bd:var(--hair);
+  position:relative;
+  display:inline-flex; align-items:center; gap:11px;
+  padding:14px 26px;
+  font-family:"Cinzel",serif; font-weight:600;
+  font-size:12.5px; letter-spacing:.18em; text-transform:uppercase;
+  text-decoration:none;
+  color:var(--mithril);
+  background:linear-gradient(180deg, rgba(116,195,145,.07), rgba(5,8,10,.5));
+  border:1px solid var(--bd);
+  transition:border-color .35s var(--ease), color .35s var(--ease),
+             background .35s var(--ease), box-shadow .45s var(--ease),
+             transform .35s var(--ease);
+}
+.btn::before,.btn::after{
+  content:""; position:absolute; width:7px; height:7px;
+  border:1px solid var(--gold); opacity:.5;
+  transition:opacity .35s var(--ease);
+}
+.btn::before{ top:-1px;    left:-1px;  border-right:0; border-bottom:0; }
+.btn::after { bottom:-1px; right:-1px; border-left:0;  border-top:0;    }
+.btn:hover,.btn:focus-visible{
+  --bd:var(--hair-lit);
+  color:#fff;
+  background:linear-gradient(180deg, rgba(116,195,145,.14), rgba(5,8,10,.5));
+  box-shadow:0 0 0 1px rgba(116,195,145,.1), 0 12px 40px -14px rgba(116,195,145,.45);
+  transform:translateY(-2px);
+  outline:none;
+}
+.btn:hover::before,.btn:hover::after,
+.btn:focus-visible::before,.btn:focus-visible::after{ opacity:1; }
+
+.btn--primary{
+  --bd:rgba(201,162,39,.5);
+  color:#f5f0dd;
+  background:linear-gradient(180deg, rgba(201,162,39,.16), rgba(5,8,10,.55));
+}
+.btn--primary:hover,.btn--primary:focus-visible{
+  --bd:var(--gold-lit);
+  background:linear-gradient(180deg, rgba(201,162,39,.26), rgba(5,8,10,.55));
+  box-shadow:0 0 0 1px rgba(201,162,39,.16), 0 14px 44px -14px rgba(201,162,39,.55);
+}
+
+.scroll-hint{
+  position:absolute; bottom:26px; left:50%; translate:-50% 0;
+  font-family:"Cinzel",serif; font-size:9.5px;
+  letter-spacing:.42em; text-indent:.42em; text-transform:uppercase;
+  color:var(--muted-dim); text-decoration:none;
+  display:flex; flex-direction:column; align-items:center; gap:9px;
+}
+.scroll-hint:hover{ color:var(--verdant); }
+.scroll-hint span{
+  width:1px; height:36px;
+  background:linear-gradient(180deg,var(--hair-lit),transparent);
+  animation:drip 2.6s var(--ease) infinite;
+}
+@keyframes drip{
+  0%,100%{ opacity:.35; transform:scaleY(.7); transform-origin:top; }
+  50%    { opacity:1;   transform:scaleY(1);  transform-origin:top; }
+}
+
+/* ─────────────────────────────  flourish  ───────────────────────────── */
+.flourish{
+  display:flex; align-items:center; justify-content:center;
+  gap:16px; margin:0 auto; padding:8px 0;
+  color:var(--hair-lit);
+}
+.flourish i{
+  height:1px; flex:1; max-width:220px;
+  background:linear-gradient(90deg,transparent,currentColor);
+}
+.flourish i:last-child{ background:linear-gradient(270deg,transparent,currentColor); }
+.flourish svg{ width:34px; height:20px; color:var(--gold); opacity:.75; flex:none; }
+
+/* ─────────────────────────────  sections  ───────────────────────────── */
+section{ position:relative; padding:88px 0; }
+
+.sec-head{ text-align:center; margin-bottom:56px; }
+.sec-head .eyebrow{ margin-bottom:14px; }
+.sec-head h2{
+  font-family:"Cinzel",serif; font-weight:600;
+  font-size:clamp(26px,4.4vw,40px);
+  letter-spacing:.06em;
+  margin:0 0 14px;
+  color:#eaf2ec;
+  text-wrap:balance;
+}
+.sec-head p{
+  max-width:52ch; margin:0 auto;
+  color:var(--muted); font-size:17.5px;
+}
+
+/* ─────────────────────────────  works grid  ───────────────────────────── */
+.works{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:22px;
+}
+@media (min-width:660px){
+  .works{ grid-template-columns:repeat(2,1fr); }
+  /* five works, two columns: the last one takes the whole final row */
+  .works > .work:last-child{ grid-column:1 / -1; }
+}
+@media (min-width:1000px){
+  .works{ grid-template-columns:repeat(3,1fr); }
+  /* three columns: the last one spans the two cells left over */
+  .works > .work:last-child{ grid-column:span 2; }
+}
+
+.work{
+  --glow:rgba(116,195,145,.42);
+  position:relative;
+  display:flex; flex-direction:column;
+  padding:32px 30px 26px;
+  background:
+    linear-gradient(180deg, rgba(116,195,145,.045), rgba(8,14,13,.72) 55%),
+    var(--ink-2);
+  border:1px solid var(--hair);
+  overflow:hidden;
+  transition:border-color .45s var(--ease), transform .45s var(--ease),
+             box-shadow .55s var(--ease);
+}
+/* a faint watermark rune, revealed on hover */
+.work-mark{
+  position:absolute; top:-26px; right:-22px;
+  width:150px; height:150px;
+  color:var(--verdant); opacity:.05;
+  transition:opacity .55s var(--ease), rotate .8s var(--ease);
+  pointer-events:none;
+}
+/* corner brackets */
+.work::before,.work::after{
+  content:""; position:absolute; width:13px; height:13px;
+  border:1px solid var(--gold); opacity:.34;
+  transition:opacity .45s var(--ease), width .45s var(--ease), height .45s var(--ease);
+}
+.work::before{ top:9px;    left:9px;  border-right:0; border-bottom:0; }
+.work::after { bottom:9px; right:9px; border-left:0;  border-top:0;    }
+
+.work:hover{
+  border-color:var(--hair-lit);
+  transform:translateY(-5px);
+  box-shadow:0 26px 60px -30px var(--glow), 0 0 0 1px rgba(116,195,145,.08);
+}
+.work:hover::before,.work:hover::after{ opacity:.95; width:19px; height:19px; }
+.work:hover .work-mark{ opacity:.11; rotate:8deg; }
+
+.work-top{
+  display:flex; align-items:baseline; gap:14px;
+  margin-bottom:16px;
+}
+.numeral{
+  font-family:"Cinzel",serif; font-weight:700;
+  font-size:13px; letter-spacing:.12em;
+  color:var(--gold); opacity:.85;
+  flex:none;
+}
+.kicker{
+  font-family:"Cinzel",serif; font-weight:500;
+  font-size:9.5px; letter-spacing:.34em; text-transform:uppercase;
+  color:var(--muted-dim);
+}
+.work-top i{
+  height:1px; flex:1;
+  background:linear-gradient(90deg,var(--hair),transparent);
+  align-self:center;
+}
+
+.work h3{
+  font-family:"Cinzel",serif; font-weight:600;
+  font-size:clamp(21px,2.4vw,25px);
+  line-height:1.22; letter-spacing:.015em;
+  margin:0 0 12px;
+  color:#f0f6f1;
+}
+.work p{
+  margin:0 0 20px;
+  font-size:17px; line-height:1.6;
+  color:var(--muted);
+  flex:1;
+}
+
+.chips{ display:flex; flex-wrap:wrap; gap:7px; margin-bottom:22px; }
+.chip{
+  font-family:"JetBrains Mono",ui-monospace,monospace;
+  font-size:10px; letter-spacing:.07em;
+  padding:4.5px 9px;
+  color:var(--verdant);
+  background:rgba(116,195,145,.07);
+  border:1px solid rgba(116,195,145,.14);
+  border-radius:2px;
+}
+
+.links{
+  display:flex; align-items:center; gap:20px;
+  padding-top:17px;
+  border-top:1px solid var(--hair);
+}
+.lnk{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:"Cinzel",serif; font-weight:600;
+  font-size:11px; letter-spacing:.17em; text-transform:uppercase;
+  text-decoration:none; color:var(--verdant);
+  transition:color .3s var(--ease), gap .3s var(--ease);
+}
+.lnk svg{ width:13px; height:13px; flex:none; }
+.lnk:hover{ color:#a8e6c0; gap:12px; }
+.lnk--quiet{ color:var(--muted-dim); }
+.lnk--quiet:hover{ color:var(--mithril); }
+.lnk--dim{ color:var(--muted-dim); cursor:default; }
+.lnk--dim:hover{ color:var(--muted-dim); gap:8px; }
+
+/* ─────────────────────────────  elsewhere  ───────────────────────────── */
+.elsewhere{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:18px;
+  max-width:760px; margin:0 auto;
+}
+.tile{
+  position:relative;
+  display:flex; flex-direction:column; gap:7px;
+  padding:26px 24px;
+  text-decoration:none;
+  background:linear-gradient(180deg, rgba(116,195,145,.04), rgba(8,14,13,.6));
+  border:1px solid var(--hair);
+  transition:border-color .4s var(--ease), transform .4s var(--ease),
+             box-shadow .5s var(--ease);
+}
+.tile:hover{
+  border-color:var(--hair-lit);
+  transform:translateY(-3px);
+  box-shadow:0 20px 46px -26px rgba(116,195,145,.4);
+}
+.tile strong{
+  font-family:"Cinzel",serif; font-weight:600;
+  font-size:15.5px; letter-spacing:.05em;
+  color:#eaf2ec;
+}
+.tile span{ font-size:15px; color:var(--muted); }
+.tile em{
+  font-family:"Cinzel",serif; font-style:normal;
+  font-size:9px; letter-spacing:.3em; text-transform:uppercase;
+  color:var(--gold); opacity:.8;
+}
+
+/* ─────────────────────────────  footer  ───────────────────────────── */
+footer{
+  padding:72px 0 56px;
+  text-align:center;
+}
+footer .flourish{ margin-bottom:34px; }
+.creed{
+  max-width:40ch; margin:0 auto 30px;
+  font-size:17px; font-style:italic;
+  color:var(--muted-dim);
+}
+.colophon{
+  font-family:"Cinzel",serif;
+  font-size:9.5px; letter-spacing:.36em; text-transform:uppercase;
+  color:#41544a;
+}
+.colophon a{ color:var(--muted-dim); text-decoration:none; }
+.colophon a:hover{ color:var(--verdant); }
+
+/* ─────────────────────────────  reveal  ───────────────────────────── */
+.rise{ opacity:0; transform:translateY(22px); }
+.rise.seen{
+  opacity:1; transform:none;
+  transition:opacity .9s var(--ease), transform .9s var(--ease);
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{ scroll-behavior:auto; }
+  .ring,.scroll-hint span{ animation:none; }
+  .rise{ opacity:1; transform:none; }
+  #motes{ display:none; }
+  *{ transition-duration:.01ms !important; }
+}
+
+@media (max-width:600px){
+  body{ font-size:17px; }
+  .wrap{ padding:0 20px; }
+  section{ padding:66px 0; }
+  .work{ padding:28px 22px 22px; }
+  .cta-row{ flex-direction:column; }
+  .btn{ justify-content:center; }
+}
+</style>
+</head>
+<body>
+
+<div class="ground"></div>
+<div class="grain"></div>
+<canvas id="motes"></canvas>
+
+<!-- ══════════════════════════  HERO  ══════════════════════════ -->
+<header class="hero">
+  <!-- turning sigil rings -->
+  <svg class="ring" viewBox="0 0 400 400" aria-hidden="true" fill="none">
+    <circle cx="200" cy="200" r="196" stroke="#74c391" stroke-width=".6"/>
+    <circle cx="200" cy="200" r="176" stroke="#c9a227" stroke-width=".4" stroke-dasharray="2 9"/>
+    <circle cx="200" cy="200" r="150" stroke="#74c391" stroke-width=".35" stroke-dasharray="1 16"/>
+    <g stroke="#74c391" stroke-width=".5">
+      <path d="M200 4v34M200 362v34M4 200h34M362 200h34"/>
+      <path d="M61 61l24 24M315 315l24 24M339 61l-24 24M85 315l-24 24"/>
+    </g>
+    <g fill="#c9a227">
+      <circle cx="200" cy="24" r="2.2"/><circle cx="200" cy="376" r="2.2"/>
+      <circle cx="24" cy="200" r="2.2"/><circle cx="376" cy="200" r="2.2"/>
+    </g>
+  </svg>
+  <svg class="ring ring--inner" viewBox="0 0 400 400" aria-hidden="true" fill="none">
+    <circle cx="200" cy="200" r="198" stroke="#74c391" stroke-width=".5" stroke-dasharray="30 12"/>
+    <circle cx="200" cy="200" r="170" stroke="#74c391" stroke-width=".3"/>
+  </svg>
+
+  <div class="wrap">
+    <!-- leaf-and-stem sigil -->
+    <svg class="sigil" viewBox="0 0 64 64" aria-hidden="true" fill="none">
+      <path d="M32 4c9 11 16 16 16 27a16 16 0 0 1-32 0C16 20 23 15 32 4z"
+            stroke="#74c391" stroke-width="1.6"/>
+      <path d="M32 16v42" stroke="#c9a227" stroke-width="1.2"/>
+      <path d="M32 30c-6-1-10-4-12-8M32 40c6-1 10-4 12-8" stroke="#74c391" stroke-width="1"/>
+      <circle cx="32" cy="60" r="2" fill="#c9a227"/>
+    </svg>
+
+    <p class="eyebrow">The Workshop of</p>
+    <h1>
+      Gavin
+      <span class="sub-name">Scott-Miller</span>
+    </h1>
+
+    <p class="lede">
+      Small, strange, useful things — mostly built after dark, mostly
+      because <em>I wanted them to exist</em>.
+    </p>
+
+    <div class="cta-row">
+      <a class="btn btn--primary" href="https://gavinsm.notion.site" target="_blank" rel="noopener">
+        My Site
+        <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <path d="M6 3h7v7M13 3L4 12"/>
+        </svg>
+      </a>
+      <a class="btn" href="#works">The Works</a>
+      <a class="btn" href="https://github.com/gvannoorden" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+
+  <a class="scroll-hint" href="#works" aria-label="Scroll to the works">
+    Descend
+    <span></span>
+  </a>
+</header>
+
+<!-- ══════════════════════════  WORKS  ══════════════════════════ -->
+<section id="works">
+  <div class="wrap">
+    <div class="sec-head rise">
+      <div class="flourish" aria-hidden="true">
+        <i></i>
+        <svg viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.1">
+          <path d="M20 3c4 5 7 7 7 11a7 7 0 0 1-14 0c0-4 3-6 7-11z"/>
+          <path d="M20 9v13" stroke-width=".9"/>
+        </svg>
+        <i></i>
+      </div>
+      <p class="eyebrow">Volume One</p>
+      <h2>The Works</h2>
+      <p>Everything here is real, running, and free to poke at. Open it, or read the source — whichever you prefer.</p>
+    </div>
+
+    <div class="works">
+
+      <!-- I -->
+      <article class="work rise">
+        <svg class="work-mark" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <circle cx="50" cy="50" r="34"/><circle cx="50" cy="50" r="22"/>
+          <path d="M50 16v68M16 50h68M26 26l48 48M74 26L26 74"/>
+        </svg>
+        <div class="work-top">
+          <span class="numeral">I</span>
+          <span class="kicker">Cartography</span>
+          <i></i>
+        </div>
+        <h3>Map Wallpaper Maker</h3>
+        <p>Turn any place on Earth into a wallpaper. Styled MapLibre maps with real terrain, a shelf of themes, and a poster-style isolate mode for when you want just the coastline and nothing else. One HTML file. No API keys.</p>
+        <div class="chips"><span class="chip">MapLibre</span><span class="chip">single-file HTML</span><span class="chip">no keys</span></div>
+        <div class="links">
+          <a class="lnk" href="https://gvannoorden.github.io/map-wallpaper-maker/" target="_blank" rel="noopener">
+            Open
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12"/></svg>
+          </a>
+          <a class="lnk lnk--quiet" href="https://github.com/gvannoorden/map-wallpaper-maker" target="_blank" rel="noopener">Source</a>
+        </div>
+      </article>
+
+      <!-- II -->
+      <article class="work rise">
+        <svg class="work-mark" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <path d="M6 74c14-6 22-22 30-22s12 12 22 12 20-10 36-16"/>
+          <path d="M6 58c14-6 22-22 30-22s12 12 22 12 20-10 36-16"/>
+          <path d="M6 90c14-6 22-22 30-22s12 12 22 12 20-10 36-16"/>
+        </svg>
+        <div class="work-top">
+          <span class="numeral">II</span>
+          <span class="kicker">Topography</span>
+          <i></i>
+        </div>
+        <h3>Canyon Wallpaper Maker</h3>
+        <p>The Grand Canyon's actual elevation data (USGS 3DEP) rendered as contour art. Same idea as above, narrower obsession — and it made a wallpaper I still haven't changed.</p>
+        <div class="chips"><span class="chip">USGS 3DEP</span><span class="chip">contours</span><span class="chip">zero deps</span></div>
+        <div class="links">
+          <a class="lnk" href="https://gvannoorden.github.io/canyon-wallpaper-maker/" target="_blank" rel="noopener">
+            Open
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12"/></svg>
+          </a>
+          <a class="lnk lnk--quiet" href="https://github.com/gvannoorden/canyon-wallpaper-maker" target="_blank" rel="noopener">Source</a>
+        </div>
+      </article>
+
+      <!-- III -->
+      <article class="work rise">
+        <svg class="work-mark" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <circle cx="50" cy="16" r="7"/><circle cx="24" cy="52" r="7"/>
+          <circle cx="76" cy="52" r="7"/><circle cx="12" cy="86" r="6"/>
+          <circle cx="38" cy="86" r="6"/><circle cx="88" cy="86" r="6"/>
+          <path d="M50 23v10M50 33H24m26 0h26M24 40v5M76 40v5M24 59v12m0 0H12v9m12-9h14v9M76 59v21"/>
+        </svg>
+        <div class="work-top">
+          <span class="numeral">III</span>
+          <span class="kicker">Genealogy</span>
+          <i></i>
+        </div>
+        <h3>Genealotree</h3>
+        <p>A photo-rich family tree backed by Notion databases. Bloodline-aware couple ordering, a focus mode that isolates a single branch, and a drawer for editing people, events, and stories in place.</p>
+        <div class="chips"><span class="chip">React</span><span class="chip">React Flow</span><span class="chip">Notion API</span><span class="chip">Vite</span></div>
+        <div class="links">
+          <a class="lnk" href="https://gvannoorden.github.io/genealotree-v2/" target="_blank" rel="noopener">
+            Open
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12"/></svg>
+          </a>
+          <a class="lnk lnk--quiet" href="https://github.com/gvannoorden/genealotree-v2" target="_blank" rel="noopener">Source</a>
+        </div>
+      </article>
+
+      <!-- IV -->
+      <article class="work rise">
+        <svg class="work-mark" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <circle cx="50" cy="54" r="34"/>
+          <path d="M50 34v20l14 10M40 10h20M50 10v10"/>
+        </svg>
+        <div class="work-top">
+          <span class="numeral">IV</span>
+          <span class="kicker">Ceremony</span>
+          <i></i>
+        </div>
+        <h3>Meeting Timer</h3>
+        <p>A big, calm, legible countdown for keeping meetings honest. Built to sit inside a Notion page and be visible from across the room.</p>
+        <div class="chips"><span class="chip">HTML</span><span class="chip">Notion embed</span></div>
+        <div class="links">
+          <a class="lnk" href="https://gvannoorden.github.io/LegacyfarmerNotiontimer/" target="_blank" rel="noopener">
+            Open
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12"/></svg>
+          </a>
+          <a class="lnk lnk--quiet" href="https://github.com/gvannoorden/LegacyfarmerNotiontimer" target="_blank" rel="noopener">Source</a>
+        </div>
+      </article>
+
+      <!-- V -->
+      <article class="work rise">
+        <svg class="work-mark" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <rect x="8" y="26" width="84" height="48" rx="5"/>
+          <path d="M22 40h8M38 40h8M54 40h8M70 40h8M22 54h8M38 54h24M70 54h8"/>
+        </svg>
+        <div class="work-top">
+          <span class="numeral">V</span>
+          <span class="kicker">Arsenal</span>
+          <i></i>
+        </div>
+        <h3>Keyboard Shortcut Tracker</h3>
+        <p>Every shortcut you've bound, laid out on an interactive keyboard so you can see what's taken and what's free. Tags, macOS/Windows toggle, TKL layouts, import and export.</p>
+        <div class="chips"><span class="chip">React</span><span class="chip">local storage</span><span class="chip">import / export</span></div>
+        <div class="links">
+          <a class="lnk lnk--quiet" href="https://github.com/gvannoorden/keyboardshortcuts" target="_blank" rel="noopener">
+            Source
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12"/></svg>
+          </a>
+          <span class="lnk lnk--dim">Not yet hosted</span>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════  ELSEWHERE  ══════════════════════════ -->
+<section id="elsewhere">
+  <div class="wrap">
+    <div class="sec-head rise">
+      <div class="flourish" aria-hidden="true">
+        <i></i>
+        <svg viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.1">
+          <path d="M20 3c4 5 7 7 7 11a7 7 0 0 1-14 0c0-4 3-6 7-11z"/>
+          <path d="M20 9v13" stroke-width=".9"/>
+        </svg>
+        <i></i>
+      </div>
+      <p class="eyebrow">Beyond the Gate</p>
+      <h2>Elsewhere</h2>
+    </div>
+
+    <div class="elsewhere rise">
+      <a class="tile" href="https://gavinsm.notion.site" target="_blank" rel="noopener">
+        <em>Notion</em>
+        <strong>My Site</strong>
+        <span>Writing, systems, and the thinking behind all of this.</span>
+      </a>
+      <a class="tile" href="https://github.com/gvannoorden" target="_blank" rel="noopener">
+        <em>GitHub</em>
+        <strong>@gvannoorden</strong>
+        <span>Source for everything above, plus the unfinished experiments.</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════  FOOTER  ══════════════════════════ -->
+<footer>
+  <div class="wrap">
+    <div class="flourish" aria-hidden="true">
+      <i></i>
+      <svg viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.1">
+        <path d="M20 3c4 5 7 7 7 11a7 7 0 0 1-14 0c0-4 3-6 7-11z"/>
+        <path d="M20 9v13" stroke-width=".9"/>
+      </svg>
+      <i></i>
+    </div>
+    <p class="creed">Not all who wander are lost — some of us are just refactoring.</p>
+    <p class="colophon">
+      Built by hand &middot; <a href="https://github.com/gvannoorden" target="_blank" rel="noopener">gvannoorden</a> &middot; MMXXVI
+    </p>
+  </div>
+</footer>
+
+<script>
+/* ── drifting motes: slow, warm, cheap ───────────────────────────── */
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cv = document.getElementById('motes');
+  if (reduce || !cv) return;
+
+  var ctx = cv.getContext('2d'), dpr = Math.min(devicePixelRatio || 1, 2);
+  var w = 0, h = 0, motes = [];
+
+  function seed(){
+    var n = Math.round(Math.min(window.innerWidth, 1600) / 16);
+    motes = [];
+    for (var i = 0; i < n; i++) motes.push({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 1.5 + .35,
+      vy: -(Math.random() * .18 + .045),
+      vx: (Math.random() - .5) * .07,
+      a: Math.random() * .5 + .12,
+      t: Math.random() * Math.PI * 2,
+      gold: Math.random() < .22
+    });
+  }
+
+  function size(){
+    w = cv.width  = Math.floor(innerWidth  * dpr);
+    h = cv.height = Math.floor(innerHeight * dpr);
+    cv.style.width = innerWidth + 'px';
+    cv.style.height = innerHeight + 'px';
+    seed();
+  }
+
+  function frame(){
+    ctx.clearRect(0, 0, w, h);
+    for (var i = 0; i < motes.length; i++){
+      var m = motes[i];
+      m.t += .012;
+      m.y += m.vy * dpr;
+      m.x += (m.vx + Math.sin(m.t) * .12) * dpr;
+      if (m.y < -12) { m.y = h + 12; m.x = Math.random() * w; }
+      if (m.x < -12) m.x = w + 12;
+      if (m.x > w + 12) m.x = -12;
+
+      var alpha = m.a * (.55 + .45 * Math.sin(m.t * .8));
+      ctx.beginPath();
+      ctx.arc(m.x, m.y, m.r * dpr, 0, 6.2832);
+      ctx.fillStyle = m.gold
+        ? 'rgba(214,178,80,' + alpha * .8 + ')'
+        : 'rgba(140,214,168,' + alpha + ')';
+      ctx.fill();
+    }
+    requestAnimationFrame(frame);
+  }
+
+  addEventListener('resize', size);
+  size();
+  frame();
+})();
+
+/* ── reveal on scroll ────────────────────────────────────────────── */
+(function(){
+  var items = document.querySelectorAll('.rise');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(function(el){ el.classList.add('seen'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      var el = e.target;
+      var sibs = Array.prototype.slice.call(el.parentNode.children);
+      el.style.transitionDelay = (Math.min(sibs.indexOf(el), 6) * 80) + 'ms';
+      el.classList.add('seen');
+      io.unobserve(el);
+    });
+  }, { rootMargin: '0px 0px -12% 0px', threshold: .08 });
+  items.forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body>
+</html>
