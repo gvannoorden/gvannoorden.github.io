@@ -78,9 +78,11 @@ Two traps in the standalone files:
 
 ## The works grid
 
-Five cards: the first is `.work--feature` and spans the full width (going
-side-by-side above 900px), the other four form a 2×2. **If the project count
-changes, revisit both rules** under `/* WORKS */`.
+Six cards: the first and last carry `.work--feature` and span the full width
+(going side-by-side above 900px), the middle four form a 2×2. The grid is two
+columns, so the count of non-feature cards has to stay even — that's the thing
+that breaks when a project is added. **If the project count changes, revisit
+both rules** under `/* WORKS */` and which cards are features.
 
 Each card is a single `<a>` wrapping the whole thing, so the `href` appears once.
 

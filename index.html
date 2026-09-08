@@ -312,8 +312,10 @@ section{ position:relative; padding:88px 0; }
 .sec-head p{ max-width:52ch; margin:0 auto; color:var(--muted); font-size:17.5px; }
 
 /* ═══════════════════════════  WORKS  ═══════════════════════════
-   Five cards: the first is the wide feature, the other four make a 2×2.
-   If the project count changes, revisit both rules below.               */
+   Six cards: the first and last are wide features that span the grid, the
+   middle four make a 2×2. Both features carry .work--feature, so an odd
+   count is what breaks the tiling — if the project count changes, revisit
+   both rules below and which cards are features.                       */
 .works{ display:grid; grid-template-columns:1fr; gap:22px; }
 @media (min-width:680px){
   .works{ grid-template-columns:repeat(2,1fr); }
@@ -692,6 +694,23 @@ footer .flourish{ margin-bottom:34px; }
           <h3>Keyboard Shortcut Tracker</h3>
           <p>Every shortcut you've bound, laid out on an interactive keyboard so you can see what's taken and what's free. Tags, macOS/Windows toggle, TKL layouts, import and export.</p>
           <div class="chips"><span class="chip">React</span><span class="chip">local storage</span><span class="chip">import / export</span></div>
+          <span class="open">Open
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <!-- VI — the closing feature -->
+      <a class="work work--feature rise" href="https://gvannoorden.github.io/jesus-questions/" target="_blank" rel="noopener">
+        <div class="shot">
+          <img src="assets/questions.webp" width="1280" height="800" loading="lazy" decoding="async"
+               alt="The Questions of Jesus: a dark page headed &quot;Jesus asked 332 questions. He was asked 284.&quot; above four figures — 332 questions, 2,258 sentences, 1 in 6.8, 39%.">
+        </div>
+        <div class="body">
+          <div class="work-top"><span class="numeral">VI</span><span class="kicker">Scripture</span><i></i></div>
+          <h3>The Questions of Jesus</h3>
+          <p>Every question in the four Gospels, counted: who asked it, who it was aimed at, what kind of question it is. He asks 332 and is asked 284 — and only about 9% of his are looking for an answer. Charts, plus a sortable index of all 616 you can argue with.</p>
+          <div class="chips"><span class="chip">World English Bible</span><span class="chip">616 questions</span><span class="chip">single-file HTML</span></div>
           <span class="open">Open
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12"/></svg>
           </span>
