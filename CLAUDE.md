@@ -78,11 +78,15 @@ Two traps in the standalone files:
 
 ## The works grid
 
-Six cards: the first and last carry `.work--feature` and span the full width
-(going side-by-side above 900px), the middle four form a 2×2. The grid is two
-columns, so the count of non-feature cards has to stay even — that's the thing
-that breaks when a project is added. **If the project count changes, revisit
-both rules** under `/* WORKS */` and which cards are features.
+Seven cards: the first and the last two carry `.work--feature` and span the
+full width (image and body going side-by-side above 900px), the middle four
+form a 2×2. The grid is two columns, so the count of non-feature cards has to
+stay even — that's the thing that breaks when a project is added. **If the
+project count changes, revisit both rules** under `/* WORKS */` and which cards
+are features.
+
+The last two cards are both features and sit stacked, so the second one is
+flipped with `row-reverse` — otherwise they read as one block repeated.
 
 Each card is a single `<a>` wrapping the whole thing, so the `href` appears once.
 
@@ -99,6 +103,13 @@ Two things that cost time, so don't re-derive them:
   ImageMagick on this machine. The script encodes in a page's `<canvas>` via
   `toDataURL('image/webp')`, served from a real http origin so the image isn't
   blocked and the canvas isn't tainted.
+
+The hymns thumbnail is a public Notion page rather than an app, which brings
+two extra needs, both handled by its `APPS` entry: `dark: true`, because
+headless Chromium reports `prefers-color-scheme: light` and Notion obeys it, so
+the shot otherwise comes back white; and a `drive` that scrolls
+`.notion-scroller` — Notion scrolls an inner div, not the window, so
+`window.scrollBy` does nothing.
 
 Genealotree and the shortcut tracker are password-gated, so their thumbnails
 default to the front door. Don't try to get past those gates. To use an interior

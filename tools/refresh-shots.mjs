@@ -72,6 +72,23 @@ const APPS = {
   // full frame of the hero: it's a long scrolling document, and the title
   // block with the four figures is the part worth putting on a card
   questions: { url: 'https://gvannoorden.github.io/jesus-questions/',    win: [1440, 900], settle: 3000, crop: [0, 0, 1, 1] },
+  // a public Notion page, so: ask for dark so the card matches the others,
+  // and scroll past the cover image to put the album art in frame. Notion
+  // scrolls an inner div, not the window, so scrollBy on the page does
+  // nothing — drive `.notion-scroller`.
+  hymns: {
+    url: 'https://scott-miller.notion.site/aicoverhymnsproject',
+    win: [1440, 900], settle: 2500, crop: [0, 0, 1, 1], dark: true,
+    drive: `(async () => {
+      const sleep = ms => new Promise(r => setTimeout(r, ms));
+      let s;
+      for (let i = 0; i < 40 && !s; i++) { s = document.querySelector('.notion-scroller'); if (!s) await sleep(250); }
+      if (!s) return 'no scroller';
+      s.scrollTop = 300;
+      await sleep(1200);
+      return 'scrollTop=' + s.scrollTop;
+    })()`,
+  },
 };
 
 const OUT_W = 1280, ASPECT = 10 / 16, QUALITY = 0.82;
@@ -137,6 +154,11 @@ console.log('capturing…');
     const app = APPS[name];
     await b.send('Emulation.setDeviceMetricsOverride', {
       width: app.win[0], height: app.win[1], deviceScaleFactor: 2, mobile: false,
+    });
+    // headless Chromium reports prefers-color-scheme:light; sites that follow
+    // it need to be told otherwise, or the thumbnail comes back white
+    await b.send('Emulation.setEmulatedMedia', {
+      features: [{ name: 'prefers-color-scheme', value: app.dark ? 'dark' : 'light' }],
     });
     await b.send('Page.navigate', { url: app.url });
     await sleep(3500);

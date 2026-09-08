@@ -312,10 +312,10 @@ section{ position:relative; padding:88px 0; }
 .sec-head p{ max-width:52ch; margin:0 auto; color:var(--muted); font-size:17.5px; }
 
 /* ═══════════════════════════  WORKS  ═══════════════════════════
-   Six cards: the first and last are wide features that span the grid, the
-   middle four make a 2×2. Both features carry .work--feature, so an odd
-   count is what breaks the tiling — if the project count changes, revisit
-   both rules below and which cards are features.                       */
+   Seven cards: the first and the last two are wide features that span the
+   grid, the middle four make a 2×2. It's the count of *non*-feature cards
+   that has to stay even — if the project count changes, revisit both rules
+   below and which cards carry .work--feature.                          */
 .works{ display:grid; grid-template-columns:1fr; gap:22px; }
 @media (min-width:680px){
   .works{ grid-template-columns:repeat(2,1fr); }
@@ -424,6 +424,9 @@ section{ position:relative; padding:88px 0; }
   .work--feature h3{ font-size:clamp(24px,2.8vw,31px); }
   .work--feature p{ flex:none; max-width:44ch; }
   .work--feature .open{ align-self:flex-start; }
+  /* two features in a row would otherwise read as one repeated block */
+  .work--feature + .work--feature{ flex-direction:row-reverse; }
+  .work--feature + .work--feature .shot{ margin:14px 14px 14px 0; }
 }
 
 /* ═══════════════════════════  FOOTER  ═══════════════════════════ */
@@ -587,7 +590,11 @@ footer .flourish{ margin-bottom:34px; }
 
     <div class="cta-row">
       <a class="btn btn--primary" href="https://gavinsm.notion.site" target="_blank" rel="noopener">
-        My Site
+        Freelance Consulting
+        <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12"/></svg>
+      </a>
+      <a class="btn" href="https://scott-miller.notion.site/Gavin-Scott-Miller-Job-Experience-Portfolio-7244e278d6da468583214a1cb3074857" target="_blank" rel="noopener">
+        R&eacute;sum&eacute;
         <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12"/></svg>
       </a>
       <a class="btn" href="#works">The Works</a>
@@ -610,7 +617,8 @@ footer .flourish{ margin-bottom:34px; }
       </div>
       <p class="eyebrow">Volume One</p>
       <h2>The Works</h2>
-      <p>Everything here is real and running. Click any of them.</p>
+      <p>These are some tech projects I&rsquo;ve worked on or vibe coded.
+        Everything here is real and running &mdash; click any of them.</p>
     </div>
 
     <div class="works">
@@ -717,6 +725,23 @@ footer .flourish{ margin-bottom:34px; }
         </div>
       </a>
 
+      <!-- VII — the closing feature -->
+      <a class="work work--feature rise" href="https://scott-miller.notion.site/aicoverhymnsproject" target="_blank" rel="noopener">
+        <div class="shot">
+          <img src="assets/hymns.webp" width="1280" height="800" loading="lazy" decoding="async"
+               alt="The Ai Cover Hymns Project: three album covers in a row — Vessels of Wrath&rsquo;s &ldquo;Vicarious Papal Drippings&rdquo;, John Knox Your Teeth Out&rsquo;s &ldquo;Limited Atonement, Unlimited Volume&rdquo;, and lofi pilgrim.">
+        </div>
+        <div class="body">
+          <div class="work-top"><span class="numeral">VII</span><span class="kicker">Hymnody</span><i></i></div>
+          <h3>The Ai Cover Hymns Project</h3>
+          <p>Old hymns handed to five bands that don&rsquo;t exist. Vessels of Wrath play screamo. John Knox Your Teeth Out play pop-punk. There is also a lofi pilgrim. Every track generated in Suno, album art and all &mdash; public-domain hymns, no rights reserved, done purely for the kicks and the giggles.</p>
+          <div class="chips"><span class="chip">Suno</span><span class="chip">5 bands</span><span class="chip">no rights reserved</span></div>
+          <span class="open">Listen
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12"/></svg>
+          </span>
+        </div>
+      </a>
+
     </div>
   </div>
 </section>
@@ -738,7 +763,7 @@ footer .flourish{ margin-bottom:34px; }
     <p class="soli">Soli Deo Gloria</p>
     <div class="cta-row" style="margin-top:0">
       <a class="btn" href="https://gavinsm.notion.site" target="_blank" rel="noopener">
-        My Site
+        Freelance Consulting
         <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12"/></svg>
       </a>
     </div>
