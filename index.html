@@ -312,7 +312,7 @@ section{ position:relative; padding:88px 0; }
 .sec-head p{ max-width:52ch; margin:0 auto; color:var(--muted); font-size:17.5px; }
 
 /* ═══════════════════════════  WORKS  ═══════════════════════════
-   Seven cards: the first and the last two are wide features that span the
+   Eight cards: the first and the last three are wide features that span the
    grid, the middle four make a 2×2. It's the count of *non*-feature cards
    that has to stay even — if the project count changes, revisit both rules
    below and which cards carry .work--feature.                          */
@@ -424,9 +424,11 @@ section{ position:relative; padding:88px 0; }
   .work--feature h3{ font-size:clamp(24px,2.8vw,31px); }
   .work--feature p{ flex:none; max-width:44ch; }
   .work--feature .open{ align-self:flex-start; }
-  /* two features in a row would otherwise read as one repeated block */
-  .work--feature + .work--feature{ flex-direction:row-reverse; }
-  .work--feature + .work--feature .shot{ margin:14px 14px 14px 0; }
+  /* features that sit in a row alternate sides, or they read as one block
+     repeated. With three in a row a sibling selector can't alternate, so the
+     middle one carries .work--flip explicitly. */
+  .work--flip{ flex-direction:row-reverse; }
+  .work--flip .shot{ margin:14px 14px 14px 0; }
 }
 
 /* ═══════════════════════════  FOOTER  ═══════════════════════════ */
@@ -709,14 +711,31 @@ footer .flourish{ margin-bottom:34px; }
         </div>
       </a>
 
-      <!-- VI — the closing feature -->
-      <a class="work work--feature rise" href="https://gvannoorden.github.io/jesus-questions/" target="_blank" rel="noopener">
+      <!-- VI — a feature, opening the run of three -->
+      <a class="work work--feature rise" href="https://gvannoorden.github.io/creation-to-revelation/" target="_blank" rel="noopener">
+        <div class="shot">
+          <img src="assets/timeline.webp" width="1280" height="800" loading="lazy" decoding="async"
+               alt="Creation to Revelation: a Gantt-style timeline with lanes for eras, key events, the kingdoms of Israel and Judah, the prophets, Jesus and the apostles, and the empires from Egypt to Rome.">
+        </div>
+        <div class="body">
+          <div class="work-top"><span class="numeral">VI</span><span class="kicker">Chronology</span><i></i></div>
+          <h3>Creation to Revelation</h3>
+          <p>The whole Bible on one Gantt chart: patriarchs, judges, every king of Israel and Judah, the prophets who stood in front of them, Jesus and the apostles, and the empires from Egypt to Rome. Tap a king for Scripture&rsquo;s verdict on him, drag the lanes into whatever order makes the overlaps obvious, or pick a book and watch the chart zoom to what it covers.</p>
+          <div class="chips"><span class="chip">Thiele chronology</span><span class="chip">66 books</span><span class="chip">single-file HTML</span></div>
+          <span class="open">Open
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <!-- VII — flipped, so it doesn't read as VI repeated -->
+      <a class="work work--feature work--flip rise" href="https://gvannoorden.github.io/jesus-questions/" target="_blank" rel="noopener">
         <div class="shot">
           <img src="assets/questions.webp" width="1280" height="800" loading="lazy" decoding="async"
                alt="The Questions of Jesus: a dark page headed &quot;Jesus asked 332 questions. He was asked 284.&quot; above four figures — 332 questions, 2,258 sentences, 1 in 6.8, 39%.">
         </div>
         <div class="body">
-          <div class="work-top"><span class="numeral">VI</span><span class="kicker">Scripture</span><i></i></div>
+          <div class="work-top"><span class="numeral">VII</span><span class="kicker">Scripture</span><i></i></div>
           <h3>The Questions of Jesus</h3>
           <p>Every question in the four Gospels, counted: who asked it, who it was aimed at, what kind of question it is. He asks 332 and is asked 284 — and only about 9% of his are looking for an answer. Charts, plus a sortable index of all 616 you can argue with.</p>
           <div class="chips"><span class="chip">World English Bible</span><span class="chip">616 questions</span><span class="chip">single-file HTML</span></div>
@@ -726,14 +745,14 @@ footer .flourish{ margin-bottom:34px; }
         </div>
       </a>
 
-      <!-- VII — the closing feature -->
+      <!-- VIII — the closing feature -->
       <a class="work work--feature rise" href="https://scott-miller.notion.site/aicoverhymnsproject" target="_blank" rel="noopener">
         <div class="shot">
           <img src="assets/hymns.webp" width="1280" height="800" loading="lazy" decoding="async"
                alt="The Ai Cover Hymns Project: three album covers in a row — Vessels of Wrath&rsquo;s &ldquo;Vicarious Papal Drippings&rdquo;, John Knox Your Teeth Out&rsquo;s &ldquo;Limited Atonement, Unlimited Volume&rdquo;, and lofi pilgrim.">
         </div>
         <div class="body">
-          <div class="work-top"><span class="numeral">VII</span><span class="kicker">Hymnody</span><i></i></div>
+          <div class="work-top"><span class="numeral">VIII</span><span class="kicker">Hymnody</span><i></i></div>
           <h3>The Ai Cover Hymns Project</h3>
           <p>Old hymns handed to five bands that don&rsquo;t exist. Vessels of Wrath play screamo. John Knox Your Teeth Out play pop-punk. There is also a lofi pilgrim. Every track generated in Suno, album art and all &mdash; public-domain hymns, no rights reserved, done purely for the kicks and the giggles.</p>
           <div class="chips"><span class="chip">Suno</span><span class="chip">5 bands</span><span class="chip">no rights reserved</span></div>

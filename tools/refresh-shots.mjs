@@ -71,6 +71,20 @@ const APPS = {
   keys:  { url: 'https://gvannoorden.github.io/keyboardshortcuts/',       win: [1440, 900], settle: 3000, crop: [0, 0, 1, 1] },
   // full frame of the hero: it's a long scrolling document, and the title
   // block with the four figures is the part worth putting on a card
+  // the Overview level shows the whole sweep, creation to Rome, in one frame;
+  // dark so the card matches the others
+  timeline: {
+    url: 'https://gvannoorden.github.io/creation-to-revelation/',
+    win: [1440, 900], settle: 2500, crop: [0, 0, 1, 1], dark: true,
+    drive: `(async () => {
+      const sleep = ms => new Promise(r => setTimeout(r, ms));
+      const b = document.querySelector('#viewSeg [data-v="o"]');
+      if (!b) return 'no view switch';
+      b.click();
+      await sleep(1500);
+      return 'overview';
+    })()`,
+  },
   questions: { url: 'https://gvannoorden.github.io/jesus-questions/',    win: [1440, 900], settle: 3000, crop: [0, 0, 1, 1] },
   // a public Notion page, so: ask for dark so the card matches the others,
   // and scroll past the cover image to put the album art in frame. Notion

@@ -78,15 +78,17 @@ Two traps in the standalone files:
 
 ## The works grid
 
-Seven cards: the first and the last two carry `.work--feature` and span the
+Eight cards: the first and the last three carry `.work--feature` and span the
 full width (image and body going side-by-side above 900px), the middle four
 form a 2×2. The grid is two columns, so the count of non-feature cards has to
 stay even — that's the thing that breaks when a project is added. **If the
 project count changes, revisit both rules** under `/* WORKS */` and which cards
 are features.
 
-The last two cards are both features and sit stacked, so the second one is
-flipped with `row-reverse` — otherwise they read as one block repeated.
+The last three cards are all features and sit stacked, so the middle one
+carries `.work--flip` (`row-reverse`) — otherwise they read as one block
+repeated. A sibling selector can only flip every feature after the first, so
+the flip is an explicit class.
 
 Each card is a single `<a>` wrapping the whole thing, so the `href` appears once.
 

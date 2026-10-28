@@ -7,7 +7,7 @@ Live: https://gvannoorden.github.io
 
 ## What it is
 
-A single static `index.html` plus seven screenshots in `assets/`. No build step,
+A single static `index.html` plus eight screenshots in `assets/`. No build step,
 no dependencies, no framework. Dark and light: parchment in light mode, near-black
 and green in dark, with a toggle in the bottom-right corner. It follows the
 system setting until you click the toggle, after which your choice is remembered
@@ -45,7 +45,7 @@ the `.kicker` category, the `<h3>`, the description, the `.chip`s, and the `href
 Then add the screenshot: put an entry in `APPS` in
 [`tools/refresh-shots.mjs`](tools/refresh-shots.mjs) and run it (see below).
 
-Seven cards are laid out as three wide features — the first and the last two —
+Eight cards are laid out as four wide features — the first and the last three —
 with a 2×2 between them. **If the count changes, check the grid rules** under
 `/* WORKS */` and which cards carry `.work--feature`: the grid is two columns,
 so the number of non-feature cards has to stay even.
